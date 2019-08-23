@@ -659,7 +659,6 @@ function init(){
     act.pause = true;
   });
   ge('cdelete1').addEventListener('click',function(){
-  	console.log(act.selected);
   	if (act.selected>=0 && act.selected<act.program.length){
   		deleteCommand(act.selected);
       clearTrace();
