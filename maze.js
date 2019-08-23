@@ -134,11 +134,21 @@ function generateMaze(x, y) {
     }
 }
 
-
-function newMaze(level){
+function drawMazeonCanvas(){
     c = document.getElementById('mycanvas');
     ctx = c.getContext("2d");
     ctx.clearRect(0,0,c.width,c.height);
+
+    for (var i=0; i<mazeColumns; i++)
+    {
+        for (var j=0; j<mazeRows; j++){
+            drawSquare(i*42.6,120-j*30,g.maze[getId(i,j)]);
+        }
+    }
+
+}
+
+function newMaze(level){
     g = null;
     g = {maze: []};
     for (var id = 0; id < mazeColumns * mazeRows; ++id) {
@@ -158,12 +168,7 @@ function newMaze(level){
     /*debug
     g.maze = [3,13,7,5,1,5,9,10,3,5,5,12,11,10,6,12,3,5,5,4,12,3,9,10,3,9,7,9,14,6,4,12,6,5,12];*/
     
-    for (var i=0; i<mazeColumns; i++)
-    {
-        for (var j=0; j<mazeRows; j++){
-            drawSquare(i*42.6,120-j*30,g.maze[getId(i,j)]);
-        }
-    }
+    drawMazeonCanvas();
 
     //that's the door x,y in the original
     endX = 6;
@@ -183,8 +188,13 @@ function newMaze(level){
         case 0: pIndex = 2+Math.floor(Math.random()*2); break;
         case 1: pIndex = 4+Math.floor(Math.random()*4); break;
         case 2: pIndex = 8+Math.floor(Math.random()*4); break;
-        case 3: pIndex = 12+Math.floor(Math.random()*4); break;
-        case 4: pIndex = 16+Math.floor(Math.random()*4); break;    
+        case 3: pIndex = 8+Math.floor(Math.random()*4); break;
+        case 4: pIndex = 12+Math.floor(Math.random()*4); break;
+        case 5: pIndex = 12+Math.floor(Math.random()*4); break;
+        case 6: pIndex = 16+Math.floor(Math.random()*4); break;
+        case 7: pIndex = 16+Math.floor(Math.random()*4); break;
+        case 8: pIndex = 20+Math.floor(Math.random()*4); break;
+        case 9: pIndex = 20+Math.floor(Math.random()*4); break;
     }
     if (pIndex > g.positions.length-1){
         pIndex = g.positions.length-1;

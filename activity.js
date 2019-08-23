@@ -49,6 +49,24 @@ function ge(id) {
   return document.getElementById(id);
 }
 
+function marginsToCanvas(marginTop,marginLeft){
+  //margins are in ems
+  point = {};
+  marginTop = parseInt(marginTop);
+  marginLeft = parseInt(marginLeft);
+  point.y = marginTop/6*30 + 15;
+  point.x = marginLeft/6*43 + 21.5;//must be the scaling
+  return(point);
+}
+
+function positionToCanvas(position){
+  point = {};
+  point.y = position[1]*30 + 15;
+  point.x = position[0]*43 + 21.5;
+  return(point);
+}
+
+
 function onResize(event) {
   var w = window.innerWidth;
   var h = window.innerHeight;
@@ -111,7 +129,7 @@ const LT = 3
 var act = {};
 var inter,inter1,inter2;
 
-const allCommands = 20;
+const allCommands = 30;
 function showCommand(cmdCode,cell){
   var idSuffix = ['fd','rt','bk','lt'];
   for (var i=0; i<4; i++){//for all cmdCodes
@@ -137,8 +155,9 @@ function highlightCommand(i){
 }
 
 function bindCommand(cmdName,cmdCode){
+  console.log(act.selected)
   ge(cmdName).onclick = function(event){
-    if (!act.play){//only add command if not in play
+    if (!act.play || (act.play && act.pause)){//only add command if not in play
     if (act.selected==-1){
       if (act.program.length<allCommands){
         cell = act.program.length;
@@ -182,15 +201,8 @@ function deleteCommand(cmdNum){
          ge('cell'+cell.toString()+idSuffix[i]).style.display = 'none';
     }    
   }
-  if (cmdNum>0){
-  	highlightCommand(cmdNum-1);
-  	runFast(cmdNum-1);
-  	act.cmdExec = cmdNum-1;
-  	act.selected = cmdNum-1;
-  }
-  else{
-    stop();
-  }
+  stop();
+
 }
 
 function setSquare(){
@@ -266,7 +278,14 @@ function animationNo(curPos,dir,hor){
         clearInterval(inter2);
         if (act.cmdExec < act.program.length){
           act.cmdExec += 1
-          setTimeout(nextCommand,100);
+          if (!act.pause){
+            setTimeout(nextCommand,100);
+          }
+        }
+        else{
+          act.outofplace = true;
+          act.selected = -1;
+          highlight(-1);
         }
       }
       else{
@@ -297,6 +316,7 @@ function animationSi(startPos,endPos,hor){
   let i=0; 
   inter = setInterval(function(){
     if (act.play){
+      startpoint = marginsToCanvas(ge('eprobot').style.marginTop,ge('eprobot').style.marginLeft);
       if (Math.abs((startPos + i*diff - endPos)) < 0.01){
         if (hor){
           ge('eprobot').style.marginLeft = sformat("{}em",endPos);
@@ -310,9 +330,16 @@ function animationSi(startPos,endPos,hor){
           setTimeout(onMenuNext,2000);
         }
         else{
-        if (act.cmdExec < act.program.length){
-          act.cmdExec += 1
-          setTimeout(nextCommand,100);
+          if (act.cmdExec < act.program.length){
+            act.cmdExec += 1
+            if (!act.pause){
+              setTimeout(nextCommand,100);
+            }
+          }
+          else{
+            highlightCommand(-1);
+            act.selected = -1;
+            act.outofplace = true;
           }
         }
       }
@@ -325,6 +352,8 @@ function animationSi(startPos,endPos,hor){
         }
         i++;
     }
+    endpoint = marginsToCanvas(ge('eprobot').style.marginTop,ge('eprobot').style.marginLeft);
+    trace(startpoint,endpoint);
   }
 },100);
 }
@@ -365,6 +394,7 @@ function animationAn(startAngle,endAngle,clock){
           highlightCommand(-1);
           act.play = false;
           act.selected = -1;
+          act.outofplace = true;//ladybug is on the end of the program
         }
       }
       else{
@@ -416,6 +446,13 @@ function canMove(d){
 
 function nextCommand(){
   if (act.play){
+    if (act.outofplace){
+      clearTrace();
+      act.cmdExec = 0;
+      act.position = [0,4];
+      act.orientation = FD;
+      act.outofplace = false;
+    }
     setSquare();
     setOrientation();
     cmdCode = act.program[act.cmdExec];
@@ -425,10 +462,9 @@ function nextCommand(){
     else{
       highlightCommand(-1);
       act.play = false;
-      act.cmdExec = 0;
-      act.position = [0,4];
-      act.orientation = FD;
       act.selected = -1;
+      act.outofplace = true;
+      act.cmdExec = 0;
     }
 
     switch (cmdCode){
@@ -474,6 +510,7 @@ function restart(){
     act.pause = false;
     act.selected = -1;
     act.level = 0;
+    act.outofplace = false;
     setOrientation();
     setSquare();
     deleteProgram();
@@ -490,16 +527,19 @@ function stop(){
   setOrientation();
   setSquare();
   highlightCommand(-1);//-1 means none
+  clearTrace();
   clearInterval(inter);
   clearInterval(inter1);
   clearInterval(inter2);
 }
 
 function runFast(currentCommand){
-  if (!act.play){
+  if (!act.play || (act.play && act.pause)){
+    clearTrace();
     act.position = [0,4];
     act.orientation = FD;
     for (i=0; i<=currentCommand; i++){
+      startpoint = positionToCanvas(act.position);
       switch (act.program[i]){
         case FD:
           switch (act.orientation){
@@ -524,6 +564,8 @@ function runFast(currentCommand){
           act.orientation = (act.orientation + 3) % 4;
         break;
       }
+      endpoint = positionToCanvas(act.position);
+      trace(startpoint,endpoint);
     }
     setSquare();
     setOrientation();
@@ -547,10 +589,27 @@ function initLevel(){
 
 
 function onMenuNext(){
-    act.level = (act.level+1)%5;
+    act.level = (act.level+1)%10;
     initLevel();
   };
 
+function clearTrace(){
+    drawMazeonCanvas();
+}
+
+function trace(startpoint,endpoint){
+
+  if (act.pencil){
+    c = ge('mycanvas');
+    ctx = c.getContext('2d');
+    ctx.setLineDash([]);
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.strokeRect(startpoint.x,startpoint.y,endpoint.x-startpoint.x,endpoint.y-startpoint.y);
+    ctx.stroke();
+    ctx.closePath();
+}
+}
 
 function init(){
   // Internal level number is zero-based; but we display it as 1-based.
@@ -566,7 +625,7 @@ function init(){
   ge('bar_next').onclick = onMenuNext;
 
   ge('bar_previous').onclick = function(){
-    act.level = (act.level+4)%5;
+    act.level = (act.level+9)%10;
     initLevel();
 
   };
@@ -589,27 +648,39 @@ function init(){
     //act.position = [0,4];
     //act.orientation = FD;
     //act.cmdExec = 0;
-    if (!act.play){
-    act.play = true;
-    setTimeout(nextCommand,100);
+    if (!act.play || (act.play && act.pause)){
+      act.play = true;
+      act.pause = false;
+      setTimeout(nextCommand,100);
     }
   });
-  
-  ge('cdelete').addEventListener('click',function(){
+  ge('cpause').addEventListener('click',function(){
+    act.selected = act.cmdExec;
+    act.pause = true;
+  });
+  ge('cdelete1').addEventListener('click',function(){
   	console.log(act.selected);
-  	if (act.selected==-1){
-  		restart();
-  	}
-  	else{
+  	if (act.selected>=0 && act.selected<act.program.length){
   		deleteCommand(act.selected);
+      clearTrace();
   	}
   });
 
-  ge('cstop').addEventListener('click',function(){
-      stop();
+  ge('cdelete').addEventListener('click',function(){
+    restart();
+    clearTrace();
   });
+
+
+  ge('cstop').addEventListener('click',stop);
+
   for (let i=0; i<allCommands; i++){
     ge('cell'+i.toString()).onclick = function(){
+      if (i==act.program.length - 1){
+        act.outofplace = false;//if user selects the last command
+                               //commands and place are back in 
+                               //harmony
+      }
       if (i<act.program.length){
         runFast(i); 
         act.selected = i; 
@@ -622,6 +693,28 @@ function init(){
     //canvasDraw();
     initLevel();
   });
+
+    ge('cpencil').addEventListener('click',function(){
+      console.log(act.outofplace);
+      if (!act.play || (act.play && act.pause)){
+        clearTrace();
+        act.pencil = !act.pencil;
+        if (act.pencil){
+          ge('cpencil').src = "resource/pencil-on.svg";
+          if (act.outofplace){
+            runFast(act.program.length-1);
+            highlightCommand(-1);
+          }
+          else{
+            runFast(act.cmdExec-1);
+          }
+        }
+        else{
+          ge('cpencil').src = "resource/pencil-off.svg";
+        }
+      }
+    });
+  act.pencil = false;
   initLevel();
 }
 
@@ -633,3 +726,4 @@ if (document.readyState === 'loading') {
 } else {  // DOMContentLoaded already fired
   onResize();
 }
+
