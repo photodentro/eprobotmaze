@@ -327,7 +327,8 @@ function animationSi(startPos,endPos,hor){
         clearInterval(inter);
         if (act.position[0] == act.exit[0] && act.position[1] == act.exit[1]){
           setAnimation('exit','success','2s');
-          setTimeout(onMenuNext,2000);
+          setTimeout(function(){setAnimation('exit','reset','0s'); stop();},2100);
+          /*setTimeout(onMenuNext,2000);*/
         }
         else{
           if (act.cmdExec < act.program.length){
