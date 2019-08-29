@@ -578,7 +578,7 @@ function runFast(currentCommand){
 function initLevel(){
     ge('level').innerHTML = act.level + 1;
     setAnimation('exit','reset','0s');
-    newMaze(act.level);
+    newLevel(act.level);
     act.position = [0,4];
     act.orientation = FD;
     setSquare();
@@ -640,6 +640,8 @@ function init(){
 
   restart();
 
+  newMaze(0);
+
   bindCommand('cforward',FD);
   bindCommand('cbackward',BK);
   bindCommand('cleft',LT);
@@ -691,7 +693,7 @@ function init(){
 
   ge('newmaze').addEventListener('click',function(){
     //canvasDraw();
-    initLevel();
+    newMaze(act.level);
   });
 
     ge('cpencil').addEventListener('click',function(){
