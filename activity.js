@@ -639,7 +639,8 @@ function init(){
 
   restart();
 
-  newMaze(0);
+  newMaze();
+  ge('level').innerHTML = act.level + 1;
 
   bindCommand('cforward',FD);
   bindCommand('cbackward',BK);
@@ -691,7 +692,8 @@ function init(){
 
   ge('newmaze').addEventListener('click',function(){
     //canvasDraw();
-    newMaze(act.level);
+    newMaze();
+    ge('level').innerHTML = act.level + 1;
   });
 
     ge('cpencil').addEventListener('click',function(){

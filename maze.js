@@ -148,7 +148,9 @@ function drawMazeonCanvas(){
 
 }
 
-function newMaze(level){
+function newMaze(){
+	level = 0;
+	act.level  = 0;
     g = null;
     g = {maze: []};
     for (var id = 0; id < mazeColumns * mazeRows; ++id) {
