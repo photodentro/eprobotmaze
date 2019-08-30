@@ -155,7 +155,6 @@ function highlightCommand(i){
 }
 
 function bindCommand(cmdName,cmdCode){
-  console.log(act.selected)
   ge(cmdName).onclick = function(event){
     if (!act.play || (act.play && act.pause)){//only add command if not in play
     if (act.selected==-1){
@@ -590,7 +589,7 @@ function initLevel(){
 
 
 function onMenuNext(){
-    act.level = (act.level+1)%10;
+    act.level = (act.level+1)%6;
     initLevel();
   };
 
@@ -626,7 +625,7 @@ function init(){
   ge('bar_next').onclick = onMenuNext;
 
   ge('bar_previous').onclick = function(){
-    act.level = (act.level+9)%10;
+    act.level = (act.level+5)%6;
     initLevel();
 
   };
@@ -686,7 +685,6 @@ function init(){
       if (i<act.program.length){
         runFast(i); 
         act.selected = i; 
-        console.log(act.selected);
       }
     };
   }
@@ -697,7 +695,6 @@ function init(){
   });
 
     ge('cpencil').addEventListener('click',function(){
-      console.log(act.outofplace);
       if (!act.play || (act.play && act.pause)){
         clearTrace();
         act.pencil = !act.pencil;
