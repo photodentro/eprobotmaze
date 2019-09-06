@@ -11,7 +11,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0
   -ms-user-select: none;
   user-select: none;
   overflow: hidden;
-/*  border-style: dotted;
+  /*border-style: dotted;
   border-width:1px;
   border-color: red;*/
 }
@@ -40,7 +40,7 @@ body {
   background-size: 100% 100%;
   height: 36em;
   width: 64em;
-  /*text-align: center;*/
+  align-self:center;
   overflow: hidden;
   padding-top: 0.5em;  /* workaround to avoid space-evenly */
   padding-bottom: 7em;  /* space for the menubar */
@@ -50,6 +50,7 @@ body {
   align-items: center;
   position: relative;
   overflow:hidden;
+  margin:auto;
 }
 
 .index{
@@ -90,9 +91,11 @@ body {
   display:inline-block;
   float:left;
   overflow: auto;
-  margin-left: 0.3em;
   width:8em;
   text-align:center;
+  margin-left:1.35em;
+
+  /*border: 2px solid red;*/
 }
 #bottom{
   display:inline-block;
@@ -117,21 +120,21 @@ body {
   cursor:pointer;  
 }
 #up{
-  background-color:#ffffff77;
+  background-color: rgba(255,255,255,0.5);
   display:inline-block;
   float:left;
   overflow: auto;
   width:8em;
 }
 #middle{
-  background-color:#ffffff77;
+  background-color: rgba(255,255,255,0.5);
   display:inline-block;
   float:left;
   overflow: auto;
   width:8em;
 }
 #down{
-  background-color:#ffffff77;	
+  background-color: rgba(255,255,255,0.5);	
   display:inline-block;
   float:left;
   overflow: auto;
@@ -178,7 +181,7 @@ body {
 }
 
 #program{
-  background-color:#00000077;
+  background-color:rgba(0,0,0,0.5);
   display:inline-block;
   height: 32em;
   width: 10em;
@@ -222,17 +225,28 @@ body {
 .cellHighlight{
   filter: brightness(180%);
   border: 2px solid yellow;
-  
   transform: scale(1.1);
 }
 #stage{
+  position: absolute;
+  display:inline-block;
+  margin-bottom: 1.5em;
+  margin-right:0.5em;
+  height: 30em;
+  width:43em;
+  background-image: url('resource/grid.svg');
+  background-size:contain;
+  background-repeat: no-repeat;
+}
+#stagebkg{
   background-color:white;
   position:absolute;
   display:inline-block;
   margin-bottom: 1.5em;
-  margin-right:0.5em;
+  margin-right:6.5em;
+  margin-left:6em;
   height: 30.1em;
-  width:43em;
+  width:30.6em;
 }
 #mycanvas{
   position:absolute;
@@ -328,6 +342,21 @@ body {
   left: 0;
   z-index:999;
 }
+
+#loading {
+  display: block; /* javascript toggles that to none */
+  text-align: center;
+  vertical-align: middle;
+  justify-content: center;
+  position: fixed;
+  background-color: rgba(63,63,63,0.5);
+  width: 100%;
+  height: 100%;
+  top: 0;  /* IE and old webview ignore "fixed" for flex childs */
+  left: 0;
+  z-index:999;
+}
+
 
 #help .dialog {
   position: absolute;

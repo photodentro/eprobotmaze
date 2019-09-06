@@ -2,11 +2,7 @@ const mazeColumns = 7;
 const mazeRows = 5;
 
 
-const NORTH = 1
-const WEST = 2
-const SOUTH = 4
-const EAST = 8
-const SET = 16
+
 
 var g = {maze:[], cmds:[], positions:[]};
 var solved;
@@ -135,6 +131,8 @@ function generateMaze(x, y) {
 }
 
 function drawMazeonCanvas(){
+    ge('stage').style.background = "none";
+    ge('stage').style.backgroundColor = "white";
     c = document.getElementById('mycanvas');
     ctx = c.getContext("2d");
     ctx.clearRect(0,0,c.width,c.height);
