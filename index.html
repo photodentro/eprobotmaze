@@ -26,6 +26,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 </div>
 <div id="main" style="display:none">
   <div id = "ui">
+  <div id="buttons">
   	<div id = "up">
   		<img id="cforward" src="resource/beebot-fd.svg" title="Μπροστά" alt="Μπροστά" />
   	</div>
@@ -36,14 +37,16 @@ SPDX-License-Identifier: CC-BY-SA-4.0
   	<div id = "down">
 		<img id="cbackward" src="resource/beebot-bk.svg" title="Πίσω" alt="Πίσω" />
     </div>
+  </div>
     <div id="programButtons">
-      <img class="progButtons" id="newmaze" src="resource/newmaz.svg" title="Νέος λαβύρινθος" alt="Νέος λαβύρινθος">
-      <img class="progButtons" id="cpencil" src="resource/pencil-off.svg" title="Ίχνος" alt="Ίχνος"/>
       <img class="progButtons" id="cgo" src="resource/beebot-go.svg" title="Εκτέλεση" alt="Εκτέλεση"/>
       <img class="progButtons" id="cpause" src="resource/beebot-pa.svg" title="Παύση" alt="Παύση"/>
       <img class="progButtons" id="cstop" src="resource/beebot-st.svg" title="Στοπ" alt="Στοπ"/>
+      <br/>
       <img class="progButtons" id="cdelete1" src="resource/beebot-de1.svg" title="Διαγραφή επιλεγμένης εντολής" alt="Διαγραφή επιλεγμένης εντολής">
       <img class="progButtons" id="cdelete" src="resource/beebot-de.svg" title="Διαγραφή εντολών" alt="Διαγραφή εντολών"/>
+      <img class="progButtons" id="cpencil" src="resource/pencil-off.svg" title="Ίχνος" alt="Ίχνος"/>
+      
       
     </div>
   </div>
@@ -247,8 +250,15 @@ SPDX-License-Identifier: CC-BY-SA-4.0
     <img id="bar_next" src="resource/bar_next.svg" alt="Επόμενο" title="Επόμενο επίπεδο"/>
 
   </div>
+  <div id=newmazediv>
+    <img class="progButtons" id="maze1" src="resource/maze1.svg" title="Λαβύρινθος 1" alt="Λαβύρινθος 1">
+    <img class="progButtons" id="maze2" src="resource/maze2.svg" title="Λαβύρινθος 2" alt="Λαβύρινθος 2">
+    <img class="progButtons" id="maze3" src="resource/maze3.svg" title="Λαβύρινθος 3" alt="Λαβύρινθος 3">
+    <img class="progButtons" id="maze0" src="resource/newmaz.svg" title="Τυχαίος λαβύρινθος" alt="Τυχαίος λαβύρινθος">
+  </div>
    </div>
 <div id="help"><div class="dialog">Σχεδίασε το πρόγραμμα με τα μπλε βελάκια και εκτέλεσέ το με το πλήκτρο εκτέλεσης για να φτάσει η πασχαλίτσα στο λουλούδι.</div><audio id="audiohelp"><source src="resource/EPRobotMaze.mp3" type="audio/mp3"></audio>
+
 </div>
 
 
