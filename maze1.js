@@ -277,14 +277,26 @@ function newMaze(mazenum){
     recursiveSolve(0,0);
     g.positions = [];
     g.cmds = pathtoCommands(path);
-    switch(level){
-        case 0: pIndex = 2+Math.floor(Math.random()*2); break;
-        case 1: pIndex = 4+Math.floor(Math.random()*3); break;
-        case 2: pIndex = 8+Math.floor(Math.random()*3); break;
-        case 3: pIndex = 12+Math.floor(Math.random()*3); break;
-        case 4: pIndex = 16+Math.floor(Math.random()*3); break;
-        case 5: pIndex = 20+Math.floor(Math.random()*3); break;
-    }
+    if (mazenum == 0){//when everything is random we allow some random flower position
+	    switch(level){
+	        case 0: pIndex = 2+Math.floor(Math.random()*2); break;
+	        case 1: pIndex = 4+Math.floor(Math.random()*3); break;
+	        case 2: pIndex = 8+Math.floor(Math.random()*3); break;
+	        case 3: pIndex = 12+Math.floor(Math.random()*3); break;
+	        case 4: pIndex = 16+Math.floor(Math.random()*3); break;
+	        case 5: pIndex = 20+Math.floor(Math.random()*3); break;
+	    }
+	}
+	else{
+		switch(level){//same flower positions in the fix mazes
+	        case 0: pIndex = 3; break;
+	        case 1: pIndex = 6; break;
+	        case 2: pIndex = 10; break;
+	        case 3: pIndex = 15; break;
+	        case 4: pIndex = 18; break;
+	        case 5: pIndex = 22; break;
+		}
+	}
     if (pIndex > g.positions.length-1){
         pIndex = g.positions.length-1;
     }

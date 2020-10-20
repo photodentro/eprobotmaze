@@ -134,6 +134,9 @@ body {
 background-color: rgba(255,255,255,0.5);
 width:7.9em;
 }
+#buttons div img:hover {
+  transform: scale(1.1);
+}
 #up{
   display:inline-block;
   float:left;
