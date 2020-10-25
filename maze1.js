@@ -137,6 +137,7 @@ function drawMazeonCanvas(){
     c = document.getElementById('mycanvas');
     ctx = c.getContext("2d");
     ctx.fillStyle = '#ffffff';
+    ctx.strokeStyle = '#000000';
     ctx.fillRect(0,0,c.width-2,c.height);
 
     ctx.strokeRect(0.5,0.5,c.width-3,c.height-1);
